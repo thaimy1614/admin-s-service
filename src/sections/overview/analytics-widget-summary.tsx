@@ -20,11 +20,11 @@ type Props = CardProps & {
   total: number;
   color?: ColorType;
   icon: React.ReactNode;
-  chart: {
-    series: number[];
-    categories: string[];
-    options?: ChartOptions;
-  };
+  // chart: {
+  //   series: number[];
+  //   categories: string[];
+  //   options?: ChartOptions;
+  // };
 };
 
 export function AnalyticsWidgetSummary({
