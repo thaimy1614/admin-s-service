@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 
 import { CONFIG } from 'src/config-global';
 
-import { NotFoundView } from 'src/sections/error';
+import { UserView } from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 
@@ -10,10 +10,10 @@ export default function Page() {
   return (
     <>
       <Helmet>
-        <title> {`404 page not found! | Error - ${CONFIG.appName}`}</title>
+        <title> {`Users - ${CONFIG.appName}`}</title>
       </Helmet>
 
-      <NotFoundView />
+      <UserView />
     </>
   );
 }
