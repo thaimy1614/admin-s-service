@@ -17,9 +17,69 @@ export function OverviewAnalyticsView() {
   const [countOrder, setCountOrder] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
 
-  useEffect(()=>{
-    
-  });
+  const fetchCountServices = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/service/count', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCountService(data.result);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    }
+  };
+  const fetchCountUser = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/user/count', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCountUser(data.result);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  const fetchCountOrder = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/order/count', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCountOrder(data.result);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
+  const fetchTotalRevenue = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/order/total-revenue', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setTotalRevenue(data.result);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching revenue:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCountServices();
+    fetchCountOrder();
+    fetchCountUser();
+    fetchTotalRevenue();
+  }, []);
 
   return (
     <DashboardContent maxWidth="xl">
