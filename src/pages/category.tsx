@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 
 import { CONFIG } from 'src/config-global';
+import { CategoryView } from 'src/sections/category/view';
 
-import { UserView } from 'src/sections/user/view';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ export default function Page() {
         <title> {`Users - ${CONFIG.appName}`}</title>
       </Helmet>
 
-      <UserView />
+      <CategoryView />
     </>
   );
 }
