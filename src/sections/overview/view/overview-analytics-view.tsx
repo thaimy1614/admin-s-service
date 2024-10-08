@@ -8,10 +8,13 @@ import { AnalyticsCurrentVisits } from '../analytics-current-visits';
 import { AnalyticsWebsiteVisits } from '../analytics-website-visits';
 import { AnalyticsWidgetSummary } from '../analytics-widget-summary';
 import { useEffect, useState } from 'react';
+import { getToken } from 'src/services/localStorageService';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export function OverviewAnalyticsView() {
+  const navigate = useNavigate();
   const [countUser, setCountUser] = useState(0);
   const [countService, setCountService] = useState(0);
   const [countOrder, setCountOrder] = useState(0);
@@ -80,7 +83,7 @@ export function OverviewAnalyticsView() {
         method: 'GET',
       });
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       if (response.ok) {
         setCategoryAnalysis(data.result);
         console.log(categoryAnalysis);
@@ -92,12 +95,16 @@ export function OverviewAnalyticsView() {
   };
 
   useEffect(() => {
-    fetchCountServices();
-    fetchCountOrder();
-    fetchCountUser();
-    fetchTotalRevenue();
-    fetchCategoryAnalysis();
-  }, []);
+    if (!getToken()) {
+      navigate('/sign-in');
+    } else {
+      fetchCountServices();
+      fetchCountOrder();
+      fetchCountUser();
+      fetchTotalRevenue();
+      fetchCategoryAnalysis();
+    }
+  }, [navigate]);
 
   return (
     <DashboardContent maxWidth="xl">
@@ -165,7 +172,7 @@ export function OverviewAnalyticsView() {
           <AnalyticsCurrentVisits
             title="Loại Dịch Vụ Được Đặt"
             chart={{
-              series: categoryAnalysis||[]
+              series: categoryAnalysis || [],
             }}
           />
         </Grid>
