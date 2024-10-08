@@ -8,32 +8,32 @@ const icon = (name: string) => (
 
 export const navData = [
   {
-    title: 'Dashboard',
+    title: 'Thống kê',
     path: '/',
     icon: icon('ic-analytics'),
   },
   {
-    title: 'User',
+    title: 'Khách hàng',
     path: '/user',
     icon: icon('ic-user'),
   },
   {
-    title: 'Category',
+    title: 'Loại dịch vụ',
     path: '/category',
     icon: icon('ic-blog'),
   },
   {
-    title: 'Service',
+    title: 'Dịch vụ',
     path: '/service',
     icon: icon('ic-blog'),
   },
   {
-    title: 'History',
+    title: 'Lịch sử',
     path: '/history',
     icon: icon('ic-cart'),
   },
   {
-    title: 'Logout',
+    title: 'Đăng xuất',
     path: '/sign-in',
     icon: icon('ic-lock'),
   },

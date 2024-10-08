@@ -130,7 +130,7 @@ export function AccountPopover({ data = [], sx, ...other }: AccountPopoverProps)
 
         <Box sx={{ p: 1 }}>
           <Button href="/sign-in" type='button' fullWidth color="error" size="medium" variant="text">
-            Logout
+            Đăng xuất
           </Button>
         </Box>
       </Popover>

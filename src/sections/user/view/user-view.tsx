@@ -81,14 +81,14 @@ export function UserView() {
     <DashboardContent>
       <Box display="flex" alignItems="center" mb={5}>
         <Typography variant="h4" flexGrow={1}>
-          Users
+          Khách hàng
         </Typography>
         <Button
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
         >
-          New user
+          Khách hàng mới
         </Button>
       </Box>
 
@@ -119,11 +119,11 @@ export function UserView() {
                 }
                 headLabel={[
                   { id: 'id', label: 'ID' },
-                  { id: 'name', label: 'Name' },
+                  { id: 'name', label: 'Tên' },
                   { id: 'email', label: 'Email' },
-                  { id: 'phone', label: 'Phone' },
-                  { id: 'address', label: 'Address' },
-                  { id: 'isVerified', label: 'Status', align: 'center' },
+                  { id: 'phone', label: 'Số điện thoại' },
+                  { id: 'address', label: 'Địa chỉ' },
+                  { id: 'isVerified', label: 'Trạng thái' },
                   { id: '' },
                 ]}
               />
