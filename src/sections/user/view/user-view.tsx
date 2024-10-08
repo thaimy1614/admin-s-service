@@ -1,4 +1,5 @@
-import { useState, useCallback } from 'react';
+/* eslint-disable */
+import { useState, useCallback, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -23,10 +24,14 @@ import { UserTableToolbar } from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import type { UserProps } from '../user-table-row';
+import { getToken } from 'src/services/localStorageService';
+import { useNavigate } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
 export function UserView() {
+  const navigate = useNavigate();
+
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
@@ -38,6 +43,12 @@ export function UserView() {
   });
 
   const notFound = !dataFiltered.length && !!filterName;
+
+  useEffect(()=>{
+    if (!getToken()) {
+      navigate('/sign-in');
+    }
+  }, [navigate]);
 
   return (
     <DashboardContent>
