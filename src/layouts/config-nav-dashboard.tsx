@@ -33,7 +33,7 @@ export const navData = [
     icon: icon('ic-cart'),
   },
   {
-    title: 'Sign in',
+    title: 'Logout',
     path: '/sign-in',
     icon: icon('ic-lock'),
   },
