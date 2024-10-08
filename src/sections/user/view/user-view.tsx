@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
 
 import { Iconify } from 'src/components/iconify';
@@ -35,19 +34,47 @@ export function UserView() {
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
+  const [users, setUsers] = useState([{
+    id: '',
+    name: '',
+    email: '',
+    address: '',
+    phone: '',
+    status: 'ACTIVE',
+  }]);
 
   const dataFiltered: UserProps[] = applyFilter({
-    inputData: _users,
+    inputData: users,
     comparator: getComparator(table.order, table.orderBy),
     filterName,
   });
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/user', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      console.log(data);
+      if (response.ok) {
+        setUsers(data.result.content);
+        console.log(users);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching category analysis:', error);
+    }
+  };
+
   useEffect(()=>{
     if (!getToken()) {
       navigate('/sign-in');
     }
+
+    fetchUsers();
+
   }, [navigate]);
 
   return (
@@ -81,21 +108,22 @@ export function UserView() {
               <UserTableHead
                 order={table.order}
                 orderBy={table.orderBy}
-                rowCount={_users.length}
+                rowCount={users.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
                 onSelectAllRows={(checked) =>
                   table.onSelectAllRows(
                     checked,
-                    _users.map((user) => user.id)
+                    users.map((user) => user.id)
                   )
                 }
                 headLabel={[
+                  { id: 'id', label: 'ID' },
                   { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
-                  { id: 'status', label: 'Status' },
+                  { id: 'email', label: 'Email' },
+                  { id: 'phone', label: 'Phone' },
+                  { id: 'address', label: 'Address' },
+                  { id: 'isVerified', label: 'Status', align: 'center' },
                   { id: '' },
                 ]}
               />
@@ -116,7 +144,7 @@ export function UserView() {
 
                 <TableEmptyRows
                   height={68}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, _users.length)}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, users.length)}
                 />
 
                 {notFound && <TableNoData searchQuery={filterName} />}
@@ -128,7 +156,7 @@ export function UserView() {
         <TablePagination
           component="div"
           page={table.page}
-          count={_users.length}
+          count={users.length}
           rowsPerPage={table.rowsPerPage}
           onPageChange={table.onChangePage}
           rowsPerPageOptions={[5, 10, 25]}

@@ -18,11 +18,10 @@ import { Iconify } from 'src/components/iconify';
 export type UserProps = {
   id: string;
   name: string;
-  role: string;
+  email: string;
+  phone: string;
+  address: string;
   status: string;
-  company: string;
-  avatarUrl: string;
-  isVerified: boolean;
 };
 
 type UserTableRowProps = {
@@ -51,25 +50,20 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
 
         <TableCell component="th" scope="row">
           <Box gap={2} display="flex" alignItems="center">
-            <Avatar alt={row.name} src={row.avatarUrl} />
-            {row.name}
+            {row.id}
           </Box>
         </TableCell>
 
-        <TableCell>{row.company}</TableCell>
+        <TableCell>{row.name}</TableCell>
 
-        <TableCell>{row.role}</TableCell>
+        <TableCell>{row.email}</TableCell>
 
-        <TableCell align="center">
-          {row.isVerified ? (
-            <Iconify width={22} icon="solar:check-circle-bold" sx={{ color: 'success.main' }} />
-          ) : (
-            '-'
-          )}
-        </TableCell>
+        <TableCell>{row.phone}</TableCell>
+
+        <TableCell>{row.address}</TableCell>
 
         <TableCell>
-          <Label color={(row.status === 'banned' && 'error') || 'success'}>{row.status}</Label>
+          <Label color={(row.status === 'INACTIVE' && 'error') || 'success'}>{row.status}</Label>
         </TableCell>
 
         <TableCell align="right">
