@@ -1,3 +1,4 @@
+/* eslint-disable */
 import type { CardProps } from '@mui/material/Card';
 import type { ChartOptions } from 'src/components/chart';
 
@@ -55,7 +56,7 @@ export function AnalyticsCurrentVisits({ title, subheader, chart, ...other }: Pr
 
   return (
     <Card {...other}>
-      <CardHeader title={title} subheader={subheader} />
+      <CardHeader title={title} style={{textAlign: 'center'}} subheader={subheader} />
 
       <Chart
         type="pie"
