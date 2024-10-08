@@ -16,6 +16,7 @@ export function OverviewAnalyticsView() {
   const [countService, setCountService] = useState(0);
   const [countOrder, setCountOrder] = useState(0);
   const [totalRevenue, setTotalRevenue] = useState(0);
+  const [categoryAnalysis, setCategoryAnalysis] = useState([]);
 
   const fetchCountServices = async () => {
     try {
@@ -73,12 +74,29 @@ export function OverviewAnalyticsView() {
       console.error('Error fetching revenue:', error);
     }
   };
+  const fetchCategoryAnalysis = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_APP_API + '/admin/order/analyze-category', {
+        method: 'GET',
+      });
+      const data = await response.json();
+      console.log(data)
+      if (response.ok) {
+        setCategoryAnalysis(data.result);
+        console.log(categoryAnalysis);
+        return data.result;
+      }
+    } catch (error) {
+      console.error('Error fetching category analysis:', error);
+    }
+  };
 
   useEffect(() => {
     fetchCountServices();
     fetchCountOrder();
     fetchCountUser();
     fetchTotalRevenue();
+    fetchCategoryAnalysis();
   }, []);
 
   return (
@@ -145,14 +163,9 @@ export function OverviewAnalyticsView() {
 
         <Grid xs={12} md={6} lg={4}>
           <AnalyticsCurrentVisits
-            title="Current visits"
+            title="Loại Dịch Vụ Được Đặt"
             chart={{
-              series: [
-                { label: 'America', value: 3500 },
-                { label: 'Asia', value: 2500 },
-                { label: 'Europe', value: 1500 },
-                { label: 'Africa', value: 500 },
-              ],
+              series: categoryAnalysis||[]
             }}
           />
         </Grid>
