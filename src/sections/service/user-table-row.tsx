@@ -12,16 +12,15 @@ import MenuItem, { menuItemClasses } from '@mui/material/MenuItem';
 
 import { Label } from 'src/components/label';
 import { Iconify } from 'src/components/iconify';
+import { wrap } from 'module';
 
 // ----------------------------------------------------------------------
 
 export type UserProps = {
   id: string;
   name: string;
-  email: string;
-  phone: string;
-  address: string;
-  status: string;
+  description: string;
+  benefits: Array<String>;
 };
 
 type UserTableRowProps = {
@@ -56,15 +55,11 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
 
         <TableCell>{row.name}</TableCell>
 
-        <TableCell>{row.email}</TableCell>
+        <TableCell style={{width: 400}}>{row.description}</TableCell>
 
-        <TableCell>{row.phone}</TableCell>
-
-        <TableCell>{row.address}</TableCell>
-
-        <TableCell>
-          <Label color={(row.status === 'INACTIVE' && 'error') || 'success'}>{row.status}</Label>
-        </TableCell>
+        <TableCell>{row.benefits.map((benefit)=>
+          <li>{benefit}</li>
+        )}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
