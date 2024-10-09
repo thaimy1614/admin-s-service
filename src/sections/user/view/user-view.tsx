@@ -228,13 +228,7 @@ export function UserView() {
         <Typography variant="h4" flexGrow={1}>
           Khách hàng
         </Typography>
-        <Button
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="mingcute:add-line" />}
-        >
-          Khách hàng mới
-        </Button>
+        
       </Box>
 
       <Card>

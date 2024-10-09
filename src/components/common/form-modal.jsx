@@ -53,6 +53,13 @@ const FormModal = ({ open, handleClose, onSubmit, formData }) => {
               required={field.required || false}
               onChange={field.onChange}
               disabled={field.disable || false}
+              multiline={field.multiline || false}
+              variant="outlined"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && field.multiline) {
+                  e.stopPropagation(); // Ngăn form submit khi nhấn Enter
+                }
+              }}
             />
           ))}
         </DialogContent>

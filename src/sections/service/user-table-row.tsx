@@ -57,8 +57,8 @@ export function UserTableRow({ row, selected, onSelectRow }: UserTableRowProps) 
 
         <TableCell style={{width: 400}}>{row.description}</TableCell>
 
-        <TableCell>{row.benefits.map((benefit)=>
-          <li>{benefit}</li>
+        <TableCell>{row.benefits.map((benefit, index)=>
+          <li key={index}>{benefit}</li>
         )}</TableCell>
 
         <TableCell align="right">

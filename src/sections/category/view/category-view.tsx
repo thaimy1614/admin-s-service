@@ -25,6 +25,8 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 import type { UserProps } from '../user-table-row';
 import { getToken } from 'src/services/localStorageService';
 import { useNavigate } from 'react-router-dom';
+import MessageModal from 'src/components/common/message-modal';
+import FormModal from 'src/components/common/form-modal';
 
 // ----------------------------------------------------------------------
 
@@ -34,12 +36,24 @@ export function CategoryView() {
   const table = useTable();
 
   const [filterName, setFilterName] = useState('');
-  const [categories, setCategories] = useState([{
-    id: '',
-    name: '',
-    description: '',
-    benefits: [],
-  }]);
+  const [categories, setCategories] = useState<
+    { id: string; name: string; description: string; benefits: string[] }[]
+  >([
+    {
+      id: '',
+      name: '',
+      description: '',
+      benefits: [],
+    },
+  ]);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+  const [messageModalOpen, setMessageModal] = useState(false);
+  const [messageType, setMessageType] = useState(false);
+  const [message, setMessage] = useState('Đổi thông tin thành công!');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [benefits, setBenefits] = useState<string[]>([]);
+  const [categoryId, setCategoryId] = useState('');
 
   const dataFiltered: UserProps[] = applyFilter({
     inputData: categories,
@@ -66,14 +80,208 @@ export function CategoryView() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     if (!getToken()) {
       navigate('/sign-in');
     }
 
     fetchUsers();
-
   }, [navigate]);
+
+  const handleFormModalClose = () => {
+    setIsFormModalOpen(false);
+    setMessageModal(false);
+  };
+
+  const handleAddCategory = () => {
+    console.log(name+description+benefits);
+    fetch(import.meta.env.VITE_APP_API + '/admin/category', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type to JSON
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        benefits: benefits,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Response body:', data);
+        if (data.result) {
+          const newCategory = data.result;
+          setCategories((prevCategories) => [...prevCategories, newCategory]);
+          setIsFormModalOpen(false);
+          setMessageType(true);
+          setMessage('Thêm loại dịch vụ mới thành công!');
+          setMessageModal(true);
+          return;
+        } else {
+          setIsFormModalOpen(true);
+          setMessageType(false);
+          setMessage('Vui lòng nhập chính xác!');
+          setMessageModal(true);
+        }
+      })
+      .catch((error) => {
+        setIsFormModalOpen(false);
+        setMessageType(false);
+        setMessage('Đã có lỗi xảy ra, vui lòng thử lại!');
+        setMessageModal(true);
+        console.log(error);
+      });
+  };
+
+  const handleChangeCategory = (id: any) => {
+    console.log(benefits);
+    fetch(import.meta.env.VITE_APP_API + '/admin/category/' + id, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type to JSON
+      },
+      body: JSON.stringify({
+        name: name,
+        description: description,
+        benefits: benefits,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Response body:', data);
+        if (data.result) {
+          setCategories((prevCategories) =>
+            prevCategories.map((category) =>
+              category.id === id ? { ...category, name, description, benefits } : category
+            )
+          );
+          setIsFormModalOpen(false);
+          setMessageType(true);
+          setMessage('Chỉnh sửa thông tin thành công!');
+          setMessageModal(true);
+          setCategoryId('');
+          return;
+        } else {
+          setIsFormModalOpen(true);
+          setMessageType(false);
+          setMessage('Vui lòng nhập chính xác!');
+          setMessageModal(true);
+        }
+      })
+      .catch((error) => {
+        setIsFormModalOpen(false);
+        setMessageType(false);
+        setMessage('Đã có lỗi xảy ra, vui lòng thử lại!');
+        setMessageModal(true);
+        console.log(error);
+      });
+  };
+
+  const checkOTPFormData = (id: any) => {
+    const isEditMode = id > 0 ? true : false; // Xác định nếu đang ở chế độ chỉnh sửa
+    return {
+      title: isEditMode ? 'Chỉnh sửa loại dịch vụ' : 'Thêm loại dịch vụ mới',
+      fields: [
+        {
+          value: name,
+          label: 'Tên',
+          name: 'name',
+          required: true,
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value),
+          type: 'text',
+        },
+        {
+          value: description,
+          label: 'Mô tả',
+          name: 'description',
+          type: 'text',
+          required: true,
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value),
+        },
+        {
+          value: benefits.join('\n'),
+          label: 'Lợi ích',
+          name: 'benefits',
+          type: 'text',
+          multiline: true,
+          rows: 4,
+          required: true,
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+            const inputValue = e.target.value;
+            const benefitsArray = inputValue.split('\n');
+            setBenefits(benefitsArray);
+          },
+        },
+      ],
+      submitText: isEditMode ? 'Chỉnh sửa' : 'Thêm mới',
+    };
+  };
+
+  const handleMessageModalClose = () => {
+    setMessageModal(false);
+  };
+
+  const handleDelete = (id: any) => {
+    console.log(id);
+    fetch(import.meta.env.VITE_APP_API + '/admin/category/' + id, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Response body:', data);
+        if (data.result === true) {
+          const status = 'DELETED';
+          setCategories((prevCategories) =>
+            prevCategories.map((category) =>
+              category.id === id ? { ...category, status } : category
+            )
+          );
+          setIsFormModalOpen(false);
+          setMessageType(true);
+          setMessage('Xóa loại dịch vụ thành công!');
+          setMessageModal(true);
+          return;
+        }
+      })
+      .catch((error) => {
+        setIsFormModalOpen(false);
+        setMessageType(false);
+        setMessage('Đã có lỗi xảy ra, vui lòng thử lại!');
+        setMessageModal(true);
+        console.log(error);
+      });
+  };
+
+  const handleShowUpdateForm = (id: any) => {
+    const category = categories.find((category) => category.id === id);
+    setName(category?.name || '');
+    setDescription(category?.description || '');
+    setBenefits(category?.benefits || []);
+    setCategoryId(id);
+    setIsFormModalOpen(true);
+    setMessageModal(false);
+  };
+  const handleShowAddForm = () => {
+    setName('');
+    setDescription('');
+    setBenefits([]);
+    setIsFormModalOpen(true);
+    setMessageModal(false);
+  };
+
+  const formSubmitHandler = () => {
+    if (categoryId !== null && categoryId !== '') {
+      handleChangeCategory(categoryId); // Gọi hàm chỉnh sửa nếu có ID
+    } else {
+      handleShowAddForm(); // Gọi hàm thêm mới nếu không có ID
+    }
+  };
 
   return (
     <DashboardContent>
@@ -82,6 +290,7 @@ export function CategoryView() {
           Loại dịch vụ
         </Typography>
         <Button
+          onClick={() => formSubmitHandler()}
           variant="contained"
           color="inherit"
           startIcon={<Iconify icon="mingcute:add-line" />}
@@ -131,6 +340,8 @@ export function CategoryView() {
                   )
                   .map((row) => (
                     <UserTableRow
+                      handleUpdate={handleShowUpdateForm}
+                      handleDelete={handleDelete}
                       key={row.id}
                       row={row}
                       selected={table.selected.includes(row.id)}
@@ -159,6 +370,28 @@ export function CategoryView() {
           onRowsPerPageChange={table.onChangeRowsPerPage}
         />
       </Card>
+      {messageModalOpen && (
+        <MessageModal
+          message={message}
+          open={messageModalOpen}
+          handleClose={handleMessageModalClose}
+          messageType={messageType}
+        />
+      )}
+      {isFormModalOpen && (
+        <FormModal
+          handleClose={handleFormModalClose}
+          open={isFormModalOpen}
+          formData={checkOTPFormData(categoryId)}
+          onSubmit={() => {
+            if (categoryId !== null && categoryId !== '') {
+              handleChangeCategory(categoryId);
+            }else{
+              handleAddCategory();
+            }
+          }}
+        />
+      )}
     </DashboardContent>
   );
 }
