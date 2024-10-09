@@ -8,9 +8,15 @@ import {
   Button,
   TextField,
   Slide,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from '@mui/material';
 
 const FormModal = ({ open, handleClose, onSubmit, formData }) => {
+  console.log(formData.select);
+  console.log(formData.choose)
   return (
     <Dialog
       open={open}
@@ -62,6 +68,28 @@ const FormModal = ({ open, handleClose, onSubmit, formData }) => {
               }}
             />
           ))}
+          {formData.select?.categories && formData.select.categories.length && (
+            <FormControl>
+
+            <InputLabel id="category-label">Loại dịch vụ*</InputLabel>
+            <Select
+              required
+              labelId="category-label"
+              id="category"
+              value={formData.choose || ''} // Ensure to set value correctly
+              label="Loại dịch vụ"
+              onChange={
+                formData.select.onChange}
+            >
+              {formData.select.categories.map((category) => (
+                <MenuItem key={category.id} value={category.name}>
+                  {category.name}
+                </MenuItem>
+              ))}
+            </Select>
+            </FormControl>
+
+          )}
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'center', padding: '16px' }}>
           <Button onClick={handleClose} variant="outlined" sx={{ marginRight: 2 }}>

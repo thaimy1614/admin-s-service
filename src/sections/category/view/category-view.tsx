@@ -94,7 +94,7 @@ export function CategoryView() {
   };
 
   const handleAddCategory = () => {
-    console.log(name+description+benefits);
+    console.log(name + description + benefits);
     fetch(import.meta.env.VITE_APP_API + '/admin/category', {
       method: 'POST',
       headers: {
@@ -386,7 +386,7 @@ export function CategoryView() {
           onSubmit={() => {
             if (categoryId !== null && categoryId !== '') {
               handleChangeCategory(categoryId);
-            }else{
+            } else {
               handleAddCategory();
             }
           }}
