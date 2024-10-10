@@ -37,13 +37,14 @@ export function CategoryView() {
 
   const [filterName, setFilterName] = useState('');
   const [categories, setCategories] = useState<
-    { id: string; name: string; description: string; benefits: string[] }[]
+    { id: string; name: string; description: string; benefits: string[], categoryStatus: string }[]
   >([
     {
       id: '',
       name: '',
       description: '',
       benefits: [],
+      categoryStatus: '',
     },
   ]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -236,10 +237,10 @@ export function CategoryView() {
       .then((data) => {
         console.log('Response body:', data);
         if (data.result === true) {
-          const status = 'DELETED';
+          const categoryStatus = 'DELETED';
           setCategories((prevCategories) =>
             prevCategories.map((category) =>
-              category.id === id ? { ...category, status } : category
+              category.id === id ? { ...category, categoryStatus } : category
             )
           );
           setIsFormModalOpen(false);
@@ -329,6 +330,7 @@ export function CategoryView() {
                   { id: 'name', label: 'Tên' },
                   { id: 'description', label: 'Mô tả' },
                   { id: 'benefits', label: 'Lợi ích' },
+                  { id: 'status', label: 'Trạng thái' },
                   { id: '' },
                 ]}
               />

@@ -22,6 +22,7 @@ export type UserProps = {
   description: string;
   categoryName: string;
   benefits: Array<String>;
+  serviceStatus: string,
 };
 
 type UserTableRowProps = {
@@ -32,7 +33,13 @@ type UserTableRowProps = {
   onSelectRow: () => void;
 };
 
-export function UserTableRow({handleUpdate, handleDelete, row, selected, onSelectRow }: UserTableRowProps) {
+export function UserTableRow({
+  handleUpdate,
+  handleDelete,
+  row,
+  selected,
+  onSelectRow,
+}: UserTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,11 +66,17 @@ export function UserTableRow({handleUpdate, handleDelete, row, selected, onSelec
         <TableCell>{row.name}</TableCell>
         <TableCell>{row.categoryName}</TableCell>
 
-        <TableCell style={{width: 400}}>{row.description}</TableCell>
+        <TableCell style={{ width: 400 }}>{row.description}</TableCell>
 
-        <TableCell>{row.benefits.map((benefit, index)=>
-          <li key={index}>{benefit}</li>
-        )}</TableCell>
+        <TableCell>
+          {row.benefits.map((benefit, index) => (
+            <li key={index}>{benefit}</li>
+          ))}
+        </TableCell>
+
+        <TableCell>
+          <Label color={(row.serviceStatus === 'DELETED' && 'error') || 'success'}>{row.serviceStatus==="DELETED"?"Đã xóa":"Có sẵn"}</Label>
+        </TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>

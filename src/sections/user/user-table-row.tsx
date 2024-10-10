@@ -67,7 +67,7 @@ export function UserTableRow({handleUpdate, handleDelete, row, selected, onSelec
         <TableCell>{row.address}</TableCell>
 
         <TableCell>
-          <Label color={(row.status === 'INACTIVE' && 'error') || 'success'}>{row.status}</Label>
+          <Label color={(row.status === 'ACTIVE' && 'success') || 'error'}>{row.status==="INACTIVE"?"Chưa kích hoạt":(row.status==="DELETED"?"Đã xóa":"Đã kích hoạt")}</Label>
         </TableCell>
 
         <TableCell align="right">

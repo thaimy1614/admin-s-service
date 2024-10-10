@@ -37,7 +37,7 @@ export function ServiceView() {
 
   const [filterName, setFilterName] = useState('');
   const [services, setServices] = useState<
-    { id: string; name: string; categoryName: string; description: string; benefits: string[] }[]
+    { id: string; name: string; categoryName: string; description: string; benefits: string[], serviceStatus: string }[]
   >([
     {
       id: '',
@@ -45,6 +45,7 @@ export function ServiceView() {
       description: '',
       categoryName: '',
       benefits: [],
+      serviceStatus: '',
     },
   ]);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
@@ -274,9 +275,9 @@ export function ServiceView() {
       .then((data) => {
         console.log('Response body:', data);
         if (data.result === true) {
-          const status = 'DELETED';
+          const serviceStatus = 'DELETED';
           setServices((prevServices) =>
-            prevServices.map((service) => (service.id === id ? { ...service, status } : service))
+            prevServices.map((service) => (service.id === id ? { ...service, serviceStatus } : service))
           );
           setIsFormModalOpen(false);
           setMessageType(true);
@@ -369,6 +370,7 @@ export function ServiceView() {
                   { id: 'category', label: 'Loại dịch vụ' },
                   { id: 'description', label: 'Mô tả' },
                   { id: 'benefits', label: 'Lợi ích' },
+                  { id: 'status', label: 'Trạng thái' },
                   { id: '' },
                 ]}
               />
