@@ -266,7 +266,7 @@ export function ServiceView() {
 
   const handleDelete = (id: any) => {
     console.log(id);
-    fetch(import.meta.env.VITE_APP_API + '/admin/category/' + id, {
+    fetch(import.meta.env.VITE_APP_API + '/admin/service/' + id, {
       method: 'DELETE',
     })
       .then((response) => {
@@ -410,6 +410,7 @@ export function ServiceView() {
           onPageChange={table.onChangePage}
           rowsPerPageOptions={[5, 10, 25]}
           onRowsPerPageChange={table.onChangeRowsPerPage}
+          labelRowsPerPage="Số hàng mỗi trang:"
         />
       </Card>
       {messageModalOpen && (
