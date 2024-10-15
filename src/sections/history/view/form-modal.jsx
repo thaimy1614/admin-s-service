@@ -70,18 +70,37 @@ const FormModal = ({ open, handleClose, onSubmit, formData }) => {
           ))}
           {formData.select?.categories && formData.select.categories.length && (
             <FormControl>
-              <InputLabel id="category-label">Loại dịch vụ*</InputLabel>
+              <InputLabel id="category-label">Dịch vụ*</InputLabel>
               <Select
                 required
                 labelId="category-label"
                 id="category"
-                value={formData.choose || ''} // Ensure to set value correctly
-                label="Loại dịch vụ"
+                value={formData.choose || 0} 
+                label="Dịch vụ"
                 onChange={formData.select.onChange}
               >
                 {formData.select.categories.map((category) => (
-                  <MenuItem key={category.id} value={category.name}>
+                  <MenuItem key={category.id} value={category.id}>
                     {category.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+          {formData.selectStage?.stages && formData.selectStage.stages.length && (
+            <FormControl>
+              <InputLabel id="stage-label">Tiến độ*</InputLabel>
+              <Select
+                required
+                labelId="stage-label"
+                value={formData.chooseStage || 0}
+                id="stage"
+                label="Tiến độ"
+                onChange={formData.selectStage.onChange}
+              >
+                {formData.selectStage.stages.map((stage) => (
+                  <MenuItem key={stage.id} value={stage.id}>
+                    {stage.name}
                   </MenuItem>
                 ))}
               </Select>
