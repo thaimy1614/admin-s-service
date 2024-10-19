@@ -17,6 +17,7 @@ import {
 const FormModal = ({ open, handleClose, onSubmit, formData }) => {
   console.log(formData.select);
   console.log(formData.choose);
+  console.log(formData.fields);
   return (
     <Dialog
       open={open}

@@ -16,6 +16,7 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const SignInPage = lazy(() => import('src/pages/sign-in'));
 export const CategoryPage = lazy(() => import('src/pages/category'));
 export const HistoryPage = lazy(() => import('src/pages/history'));
+export const StaffPage = lazy(() => import('src/pages/rating-staff'));
 
 // ----------------------------------------------------------------------
 
@@ -48,6 +49,7 @@ export function Router() {
         { path: 'service', element: <ServicePage /> },
         { path: 'category', element: <CategoryPage /> },
         { path: 'history', element: <HistoryPage /> },
+        { path: 'rating-staff', element: <StaffPage /> },
       ],
     },
     {

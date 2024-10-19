@@ -17,29 +17,19 @@ import { wrap } from 'module';
 // ----------------------------------------------------------------------
 
 export type UserProps = {
-  id: string;
-  name: string;
-  email: string;
-  createdDate: string;
-  updatedDate: string;
-  stageName: string;
-  serviceName: string;
-  price: number;
-  status: string;
-  staffName: string
+  staffName: string;
+  rating: number;
 };
 
 type UserTableRowProps = {
-  handleUpdate: Function;
-  handleDelete: Function;
+  handleShow: Function;
   row: UserProps;
   selected: boolean;
   onSelectRow: () => void;
 };
 
 export function UserTableRow({
-  handleUpdate,
-  handleDelete,
+  handleShow,
   row,
   selected,
   onSelectRow,
@@ -61,23 +51,9 @@ export function UserTableRow({
           <Checkbox disableRipple checked={selected} onChange={onSelectRow} />
         </TableCell> */}
 
-        <TableCell style={{display: "none"}} component="th" scope="row">
-          <Box gap={2} display="flex" alignItems="center">
-            {row.id}
-          </Box>
-        </TableCell>
 
-        <TableCell>{row.name}</TableCell>
-        <TableCell>{row.email}</TableCell>
-        <TableCell>{row.serviceName}</TableCell>
         <TableCell>{row.staffName}</TableCell>
-        <TableCell>{row.price}</TableCell>
-        <TableCell>{row.stageName}</TableCell>
-        <TableCell>{row.createdDate}</TableCell>
-        <TableCell>{row.updatedDate}</TableCell>
-        <TableCell>
-          <Label color={(row.status === 'DELETED' && 'error') || 'success'}>{row.status==="DELETED"?"Đã hủy":(row.status==="PENDING"?"Đang thực hiện":"Hoàn thành")}</Label>
-        </TableCell>
+        <TableCell>{row.rating}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenPopover}>
@@ -109,14 +85,9 @@ export function UserTableRow({
             },
           }}
         >
-          <MenuItem onClick={() => handleUpdate(row.id)}>
+          <MenuItem onClick={() => handleShow(row.staffName)}>
             <Iconify icon="solar:pen-bold" />
-            Chỉnh sửa
-          </MenuItem>
-
-          <MenuItem onClick={() => handleDelete(row.id)} sx={{ color: 'error.main' }}>
-            <Iconify icon="solar:trash-bin-trash-bold" />
-            Hủy dơn
+            Xem chi tiết
           </MenuItem>
         </MenuList>
       </Popover>

@@ -50,6 +50,7 @@ export function HistoryView() {
       price: number;
       stageId: number;
       serviceId: number;
+      staffName: string;
     }[]
   >([
     {
@@ -64,6 +65,7 @@ export function HistoryView() {
       status: '',
       stageId: 0,
       serviceId: 0,
+      staffName: '',
     },
   ]);
 
@@ -76,6 +78,7 @@ export function HistoryView() {
   const [message, setMessage] = useState('Đổi thông tin thành công!');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [staffName, setStaffName] = useState('');
   const [stageName, setStageName] = useState('');
   const [stageId, setStageId] = useState(0);
   const [price, setPrice] = useState(0);
@@ -182,6 +185,7 @@ export function HistoryView() {
       body: JSON.stringify({
         name: name,
         email: email,
+        staffName: staffName,
         price: price,
         serviceId: serviceId,
       }),
@@ -225,6 +229,7 @@ export function HistoryView() {
       body: JSON.stringify({
         name: name,
         email: email,
+        staffName: staffName,
         price: price,
         stageId: Number(stageId),
         serviceId: Number(serviceId),
@@ -239,7 +244,7 @@ export function HistoryView() {
           console.log
           setOrders((prevOrders) =>
             prevOrders.map((order) =>
-              order.id === id ? { ...order, updatedDate:data.result.updatedDate,status: data.result.status, stageId, serviceId, name, email, serviceName: data.result.serviceName, stageName:data.result.stageName, price } : order
+              order.id === id ? { ...order, updatedDate:data.result.updatedDate,status: data.result.status, staffName, stageId, serviceId, name, email, serviceName: data.result.serviceName, stageName:data.result.stageName, price } : order
             )
           );
           
@@ -327,6 +332,14 @@ export function HistoryView() {
           onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
             setPrice(e.target.value as unknown as number),
         },
+        {
+          value: staffName,
+          label: 'Tên nhân viên',
+          name: 'staffName',
+          type: 'text',
+          required: true,
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => setStaffName(e.target.value),
+        },
       ],
       submitText: isEditMode ? 'Chỉnh sửa' : 'Thêm mới',
     };
@@ -353,7 +366,7 @@ export function HistoryView() {
           );
           setIsFormModalOpen(false);
           setMessageType(true);
-          setMessage('Xóa đơn thành công!');
+          setMessage('Hủy đơn thành công!');
           setMessageModal(true);
           return;
         }
@@ -374,6 +387,7 @@ export function HistoryView() {
     setServiceId(order?.serviceId || 0);
     setStageId(order?.stageId || 0);
     setPrice(order?.price || 0);
+    setStaffName(order?.staffName || '');
     setOrderId(id);
     setIsFormModalOpen(true);
     setMessageModal(false);
@@ -383,6 +397,7 @@ export function HistoryView() {
     setEmail('');
     setPrice(0);
     setServiceName('');
+    setStaffName('');
     setStageId(0);
     setServiceId(0);
     setOrderId('');
@@ -443,6 +458,7 @@ export function HistoryView() {
                   { id: 'name', label: 'Tên' },
                   { id: 'email', label: 'Email' },
                   { id: 'serviceName', label: 'Tên dịch vụ' },
+                  { id: 'staffName', label: 'Tên nhân viên' },
                   { id: 'price', label: 'Giá' },
                   { id: 'stageName', label: 'Tiến độ' },
                   { id: 'createdDate', label: 'Ngày tạo' },

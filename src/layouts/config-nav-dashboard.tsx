@@ -33,6 +33,11 @@ export const navData = [
     icon: icon('ic-cart'),
   },
   {
+    title: 'Đánh giá',
+    path: '/rating-staff',
+    icon: icon('ic-user'),
+  },
+  {
     title: 'Đăng xuất',
     path: '/sign-in',
     icon: icon('ic-lock'),
